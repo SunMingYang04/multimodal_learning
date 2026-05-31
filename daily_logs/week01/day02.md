@@ -274,6 +274,74 @@ from attention import attention
 
 ---
 
+## 跨对话同步记录
+
+本日志已同步此前其他对话中确定的长期学习规则与仓库定位，避免 Day02 只记录单日代码，而脱离三个月多模态算法实习冲刺主线。
+
+### 1. 仓库定位
+
+当前 GitHub 仓库不是普通学习笔记，而是用于积累：
+
+- 公开学习档案；
+- 项目证据链；
+- 面试素材库；
+- 可复现实验记录；
+- 后续简历 bullet 的原始材料。
+
+因此每天日志必须服务于最终目标：三个月内形成多模态算法实习候选人的可验证能力。
+
+### 2. 当前阶段定位
+
+当前处于 Week 01 的基础补齐阶段，主线是：
+
+```text
+Transformer / Attention → Multi-Head Attention → Positional Encoding → ViT Patch Embedding → CLIP 准备
+```
+
+Day01 已完成 scaled dot-product attention；Day02 推进到 multi-head attention。当前不追求快速堆模型名，而是先把 Transformer 内部的 tensor shape 和计算流打牢。
+
+### 3. 与三个月路线的关系
+
+Day02 的 Multi-Head Attention 是后续以下内容的基础：
+
+- ViT：图像 patch token 之间通过 self-attention 建模关系；
+- CLIP：图像编码器和文本编码器都依赖 Transformer/Attention 表征；
+- BLIP / BLIP-2：理解图文交互和 Q-Former 前必须理解 attention；
+- LLaVA / Qwen-VL / InternVL：视觉 token、文本 token、projector 与 LLM 对接都需要 shape 意识；
+- LoRA / QLoRA：后续选择 target modules 时也需要理解 attention projection 层。
+
+### 4. 每日动态推进规则
+
+后续每日不再机械执行固定计划，而采用动态导师制流程：
+
+```text
+当日完成 → GitHub 检查 → 概念考校 → 日志更新 → 第二日计划生成
+```
+
+第二日任务会根据当天掌握情况分为三类：
+
+- A 类：代码运行成功，shape 能解释清楚，核心问题回答稳定，则正常进入下一主题；
+- B 类：代码基本完成，但 shape 或概念表达不稳，则第二天先补薄弱点，再进入新主题；
+- C 类：代码未跑通或核心概念混乱，则不推进新内容，继续重写与修正当天任务。
+
+### 5. Day02 当前判定
+
+Day02 当前状态暂定为 B 类偏上：
+
+- 已完成 multi-head attention 初版代码；
+- 已理解“多个子空间里的多种关系建模”这一核心思想；
+- 仍需巩固 `view / transpose / contiguous / concat heads` 的 shape 变化；
+- 还需要补充更详细的 shape 打印和更稳妥的 import 方式。
+
+因此 Day03 不直接大幅推进新内容，而是采用：
+
+```text
+上午巩固 Multi-Head Attention shape
+下午视情况进入 Positional Encoding
+```
+
+---
+
 ## 明日计划
 
 明天不急着进入全新的模型主题，先进行 Day02 巩固，再根据掌握情况进入 Positional Encoding。
@@ -321,5 +389,7 @@ from attention import attention
 今天已经从 single-head attention 推进到 multi-head attention，并完成了初版代码实现。当前最重要的收获是理解：
 
 > Multi-head attention 不是简单获得更多特征，而是在多个子空间里分别建模不同类型的 token 关系。
+
+结合此前确定的三个月冲刺目标，Day02 的意义不只是完成一个 attention 模块，而是为后续 ViT、CLIP、BLIP、LLaVA、Qwen-VL 和 InternVL 打下 shape 与模块理解基础。
 
 今晚到此为止，不继续推进新内容。明天先巩固 shape，再视情况进入 positional encoding。
