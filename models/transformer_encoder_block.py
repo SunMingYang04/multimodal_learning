@@ -8,13 +8,19 @@ class TransformerEncoderBlock(nn.Module):
     逻辑顺序：Multi-Head Attention -> Add & Norm -> Feed Forward Network -> Add & Norm
     """
     def __init__(self, embed_dim, num_heads, ff_dim):
+    def __init__(self, embed_dim, num_heads, ff_dim, dropout=0.1):
         super().__init__()
         # 1. 初始化多头注意力机制
         self.mha = MultiHeadAttention(embed_dim, num_heads)
+        self.mha = MultiHeadAttention(embed_dim, num_heads, dropout)
 
         # 2. 初始化两个 LayerNorm 层
         self.norm1 = nn.LayerNorm(embed_dim)
         self.norm2 = nn.LayerNorm(embed_dim)
+
+        # 增加 Dropout 层
+        self.dropout1 = nn.Dropout(dropout)
+        self.dropout2 = nn.Dropout(dropout)
 
         # 3. 初始化 FFN (Sequential)
         # 提示：ff_dim 建议设为 embed_dim 的 4 倍 (如 64 -> 256)
@@ -33,12 +39,14 @@ class TransformerEncoderBlock(nn.Module):
         # 2. 残差连接 + LayerNorm
         # 公式：x = LayerNorm(x + Sublayer(x))
         x = self.norm1(x + attn_out)
+        x = self.norm1(x + self.dropout1(attn_out))
 
         # 3. 经过 Feed Forward Network
         ffn_out = self.ffn(x)
 
         # 4. 残差连接 + LayerNorm
         x = self.norm2(x + ffn_out)
+        x = self.norm2(x + self.dropout2(ffn_out))
 
         # 返回: x, attn_weights
         return x, attn_weights
